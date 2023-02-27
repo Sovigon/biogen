@@ -35,6 +35,9 @@ for start_cell in range(rand.randint(3, 5)):
 
 # print(grid)
 
+grid_active = []
+new_cells = []
+
 
 def main():
 
@@ -53,7 +56,6 @@ def main():
             if event.type == pg.QUIT:
                 ignit = False
 
-        global grid_active
         grid_active = []
 
         row_index = 0
@@ -65,7 +67,6 @@ def main():
                 column_index += 1
             row_index += 1
 
-        global new_cells
         new_cells = []
 
         for cell in grid_active:
@@ -93,7 +94,7 @@ def grid_create():
                                          (BOX_SIZE + MARGIN) * row + MARGIN, BOX_SIZE, BOX_SIZE])
 
 
-def neighbors(cell, min_grid_y=0, min_grid_x=0, max_grid_y=MAX_COLUMN_LENGTH, max_grid_x=MAX_ROW_LENGTH):
+def neighbors(cell, min_grid_y=0, min_grid_x=0, max_grid_y=MAX_COLUMN_LENGTH, max_grid_x=MAX_ROW_LENGTH, new=new_cells, active=grid_active):
     # print(cell)
     cell_y = cell[0]
     cell_x = cell[1]
@@ -111,27 +112,14 @@ def neighbors(cell, min_grid_y=0, min_grid_x=0, max_grid_y=MAX_COLUMN_LENGTH, ma
             neighbor_list.append([y, x])
 
     # print(f"Starting list: {neighbor_list}")
+
     for trim in neighbor_list[:]:
-        # print(trim)
-        if trim in grid_active:
+        if trim in active or new:
             neighbor_list.remove(trim)
-            # print(f"Removed {trim} by already existing!")
-        elif trim in new_cells:
+        elif not min_grid_x <= trim[0] < max_grid_x:
             neighbor_list.remove(trim)
-            # print(f"Removed {trim} by already being counted!")
-        elif trim[0] < min_grid_x:
+        elif not min_grid_y <= trim[1] < max_grid_y:
             neighbor_list.remove(trim)
-            # print(f"Removed {trim} by trim[0] < min!")
-        elif trim[1] < min_grid_y:
-            neighbor_list.remove(trim)
-            # print(f"Removed {trim} by trim[1] < min!")
-        elif trim[0] >= max_grid_x:
-            neighbor_list.remove(trim)
-            # print(f"Removed {trim} by trim[0] >= max!")
-        elif trim[1] >= max_grid_y:
-            neighbor_list.remove(trim)
-            # print(f"Removed {trim} by trim[1] >= max!")
-    # print(f"Ending list: {neighbor_list} \n")
 
     return neighbor_list
 
