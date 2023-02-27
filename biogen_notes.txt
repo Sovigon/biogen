@@ -1,0 +1,10 @@
+Make the grid 1 dimensional, splitting at the width of the grid
+
+Remove the multiplier in grid_create, make it increments of the margin
+
+Do math substitution at neighbors I thought you took 3 years of Calc
+Change the definition of min and max cell x and y using increments
+
+Make the color fetcher break once it gets the output (with a return function outside of the else)
+
+Update grid goes to render grid, have display flip at the end
