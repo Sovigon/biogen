@@ -65,13 +65,15 @@ def main():
                 column_index += 1
             row_index += 1
 
+        global new_cells
+        new_cells = []
+
         for cell in grid_active:
-            neighbor_cells = neighbors(cell)
+            new_cells = neighbors(cell)
             grid[cell[0]][cell[1]] = 2
-            for neighbor in neighbor_cells:
-                if grid[neighbor[0]][neighbor[1]] == 0:
-                    grid[neighbor[0]][neighbor[1]] = 1
-                pg.display.flip()
+            for new_cell in new_cells:
+                if grid[new_cell[0]][new_cell[1]] == 0:
+                    grid[new_cell[0]][new_cell[1]] = 1
 
     pg.quit()
     # print(grid_active)
@@ -111,9 +113,12 @@ def neighbors(cell, min_grid_y=0, min_grid_x=0, max_grid_y=MAX_COLUMN_LENGTH, ma
     # print(f"Starting list: {neighbor_list}")
     for trim in neighbor_list[:]:
         # print(trim)
-        if grid_active.count(trim) == 1:
+        if trim in grid_active:
             neighbor_list.remove(trim)
             # print(f"Removed {trim} by already existing!")
+        elif trim in new_cells:
+            neighbor_list.remove(trim)
+            # print(f"Removed {trim} by already being counted!")
         elif trim[0] < min_grid_x:
             neighbor_list.remove(trim)
             # print(f"Removed {trim} by trim[0] < min!")
